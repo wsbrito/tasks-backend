@@ -51,6 +51,14 @@ pipeline {
 				}
         	}
         }
+        stage ('Functional Test') {
+        	steps {
+	        	dir('functional-test') {
+					git 'https://github.com/wsbrito/tasks-functional-test'
+					sh 'mvn test'
+				}
+        	}
+        }
     }
 }
 
