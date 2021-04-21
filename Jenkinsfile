@@ -42,6 +42,15 @@ pipeline {
 				}
         	}
         }
+        stage ('Deploy Frontend') {
+        	steps {
+	        	dir('frontend') {
+					git 'https://github.com/wsbrito/tasks-frontend'
+	                sh 'mvn clean package'
+					deploy adapters: [tomcat9(credentialsId: 'TomcatID', path: '', url: 'http://localhost:8080/')], contextPath: 'tasks', war: 'target/tasks.war'        	
+				}
+        	}
+        }
     }
 }
 
