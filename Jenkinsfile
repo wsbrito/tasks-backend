@@ -23,7 +23,7 @@ pipeline {
         }
         stage ('Quality Gate') {
         	steps {
-        		sleep(30)
+        		sleep(15)
         		timeout(time: 1, unit: 'MINUTES') {
         			waitForQualityGate abortPipeline: true
         		}
@@ -32,6 +32,12 @@ pipeline {
         stage ('Deploy Backend') {
         	steps {
 				deploy adapters: [tomcat9(credentialsId: 'TomcatID', path: '', url: 'http://localhost:8080/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'        	
+        	}
+        }
+        stage ('API Test') {
+        	steps {
+				git 'https://github.com/wsbrito/task-api-test'
+				sh 'mvn test'
         	}
         }
     }
