@@ -60,10 +60,18 @@ pipeline {
         	}
         }
         stage ('Deploy prod') {
-        	steps {
-        		sh 'sudo docker-compose build'
-        		sh 'sudo docker-compose up -d'
-        	}
+            steps {
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
+            }
+        }
+        stage ('Health Check') {
+            steps {
+                sleep(30)
+                dir('functional-test') {
+                    sh 'mvn verify -Dskip.surefire.tests'
+                }
+            }
         }
     }
 }
