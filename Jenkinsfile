@@ -67,11 +67,16 @@ pipeline {
         }
         stage ('Health Check') {
             steps {
-                sleep(30)
+                sleep(45)
                 dir('functional-test') {
                     sh 'mvn verify -Dskip.surefire.tests'
                 }
             }
+        }
+    }
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml, api-test/target/surefire-reports/*.xml, functional-test/target/surefire-reports/*.xml, functional-test/target/failsafe-reports/*.xml'
         }
     }
 }
