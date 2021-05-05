@@ -67,7 +67,7 @@ pipeline {
         }
         stage ('Health Check') {
             steps {
-                sleep(45)
+                sleep(30)
                 dir('functional-test') {
                     sh 'mvn verify -Dskip.surefire.tests'
                 }
